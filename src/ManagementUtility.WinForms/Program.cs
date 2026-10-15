@@ -19,6 +19,7 @@ internal static class Program
 
         Directory.CreateDirectory(databaseDirectory);
 
+        
         var databasePath = Path.Combine(
             databaseDirectory,
             "management-utility.db");
@@ -37,6 +38,12 @@ internal static class Program
             dbContext.Database.Migrate();
         }
 
+        DatabaseSeeder.SeedDemoAssetsAsync(
+                serviceProvider.GetRequiredService<
+                    IDbContextFactory<ManagementUtilityDbContext>>())
+            .GetAwaiter()
+            .GetResult();
+        
         Application.Run(serviceProvider.GetRequiredService<MainForm>());
     }
 }
